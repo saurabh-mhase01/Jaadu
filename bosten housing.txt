@@ -1,0 +1,44 @@
+Ass. 6 Implement Boston housing price Prediction Problem by Linear Regression by using Deep Neural 
+Network. Use Boston House price prediction dataset.
+import tensorflow as tf
+from tensorflow.keras.datasets import boston_housing
+from sklearn import preprocessing
+# Load the Boston Housing dataset
+(train_x,train_y),(test_x,test_y) = boston_housing.load_data()
+print("Train shape :",train_x.shape)
+print("Test shape :",test_x.shape)
+print("Actual Train output :",train_y.shape)
+print("Actual test output :",test_y.shape)
+test_x[4]
+test_y[4]
+# normalize the dataset
+train_x = preprocessing.normalize(train_x)
+test_x = preprocessing.normalize(test_x)
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import *
+from keras.layers import Activation, Dense
+# Build the model
+def HousePricePredictionModel():
+model = Sequential()
+model.add(Dense(128,activation='relu',input_shape = (train_x[0].shape)))
+model.add(Dense(64,activation='relu'))
+model.add(Dense(32,activation='relu'))
+model.add(Dense(1))
+# Compile the model
+model.compile(optimizer='rmsprop',loss='mse',metrics=['mae'])
+return model
+import numpy as np
+k = 4
+num_val_samples = len(train_x)
+num_epochs = 100
+all_scores = []
+# Train the model
+model = HousePricePredictionModel()
+history = model.fit(x=train_x, y=train_y, epochs = num_epochs, batch_size=1, verbose 
+=1, validation_data=(test_x,test_y))
+# Test the model
+test_input = [[1.52158193e-04, 0.00000000e+00, 9.55377269e-03,
+0.00000000e+00,9.55377269e-04, 1.30241966e-02, 1.20858416e-01, 7.97410212e03,6.38336705e-03, 5.25563887e-01, 3.93640968e-02, 8.40795830e-01,1.79585393e-02]]
+predicted_value = model.predict(test_input)
+print("actual value is :",test_y[4])
+print("predicted value is : ",predicted_value)
